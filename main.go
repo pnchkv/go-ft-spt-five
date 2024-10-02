@@ -55,9 +55,13 @@ type InfoMessage struct {
 
 // TrainingInfo возвращает cтруктуру InfoMessage, в которой хранится вся информация о проведенной тренировке.
 func (t Training) TrainingInfo() InfoMessage {
-	var infoMessage InfoMessage
-	infoMessage.TrainingType = t.TrainingType
-	return infoMessage
+	return InfoMessage{
+		TrainingType: t.TrainingType,
+		Duration:     t.Duration,
+		Distance:     t.distance(),
+		Speed:        t.meanSpeed(),
+		Calories:     t.Calories(),
+	}
 }
 
 // String возвращает строку с информацией о проведенной тренировке.
@@ -99,14 +103,7 @@ func (r Running) Calories() float64 {
 // TrainingInfo возвращает структуру InfoMessage с информацией о проведенной тренировке.
 // Это переопределенный метод TrainingInfo() из Training.
 func (r Running) TrainingInfo() InfoMessage {
-	var infoMessage InfoMessage
-
-	infoMessage.TrainingType = r.Training.TrainingType
-	infoMessage.Duration = r.Training.Duration
-	infoMessage.Distance = r.Training.distance()
-	infoMessage.Speed = r.Training.meanSpeed()
-
-	return infoMessage
+	return r.Training.TrainingInfo()
 }
 
 // Константы для расчета потраченных килокалорий при ходьбе.
@@ -138,14 +135,7 @@ func (w Walking) Calories() float64 {
 // TrainingInfo возвращает структуру InfoMessage с информацией о проведенной тренировке.
 // Это переопределенный метод TrainingInfo() из Training.
 func (w Walking) TrainingInfo() InfoMessage {
-	var infoMessage InfoMessage
-
-	infoMessage.TrainingType = w.Training.TrainingType
-	infoMessage.Duration = w.Training.Duration
-	infoMessage.Distance = w.Training.distance()
-	infoMessage.Speed = w.Training.meanSpeed()
-
-	return infoMessage
+	return w.Training.TrainingInfo()
 }
 
 // Константы для расчета потраченных килокалорий при плавании.
@@ -184,14 +174,13 @@ func (s Swimming) Calories() float64 {
 // TrainingInfo returns info about swimming training.
 // Это переопределенный метод TrainingInfo() из Training.
 func (s Swimming) TrainingInfo() InfoMessage {
-	var infoMessage InfoMessage
-
-	infoMessage.TrainingType = s.Training.TrainingType
-	infoMessage.Duration = s.Training.Duration
-	infoMessage.Distance = s.Training.distance()
-	infoMessage.Speed = s.meanSpeed()
-
-	return infoMessage
+	return InfoMessage{
+		TrainingType: s.TrainingType,
+		Duration:     s.Duration,
+		Distance:     s.distance(),
+		Speed:        s.meanSpeed(),
+		Calories:     s.Calories(),
+	}
 }
 
 // ReadData возвращает информацию о проведенной тренировке.
